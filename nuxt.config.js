@@ -21,7 +21,7 @@ export default {
 
   // 루트 Vue.js 애플리케이션을 인스턴스화 하기 전에 실행해야 하는 JavaScript 플러그인을 정의 가능.
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-  plugins: [],
+  plugins: ['~/plugins/customPlugin.js'],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,

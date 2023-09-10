@@ -1,32 +1,41 @@
 <template>
-  <li @click="handleItemClick">
-    <img class="product-image" :src="imgUrl" alt="" />
-    <p>{{ name }}</p>
-    <span>{{ price }}</span>
+  <li>
+    <img class="product-image" :src="item.imageUrl" alt="" @click="handleItemClick" />
+    <p>{{ item.name }}</p>
+    <span>{{ item.price }}</span>
+    <button @click="handleAddCart">
+      <template v-if="isAdded">
+        REMOVE CART (-)
+      </template>
+      <template v-else>
+        ADD CART (+)
+      </template>
+    </button>
   </li>
 </template>
 
 <script>
-import generateImgUrl from '@/utils/generateImgUrl.js'
 export default {
   name: 'ProductView',
-  props: {
-    id: Number,
-    imageUrl: String,
-    name: String,
-    price: String,
+  props: ['item', 'isAdded'],
+  data() {
+    return {
+      isAddedCart: false,
+    }
   },
   methods: {
     handleItemClick() {
       this.$emit('onClick')
     },
-  },
-  computed: {
-    imgUrl() {
-      return generateImgUrl(this.imageUrl, this.id)
-    },
+    handleAddCart() {
+      this.$emit('onAddCart', this.item);
+    }
   },
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+.product-image {
+  width: 100%;
+}
+</style>

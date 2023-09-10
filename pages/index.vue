@@ -1,48 +1,59 @@
 <template>
   <div class="app">
     <main>
-      <search-input />
+      <search-input
+        v-bind:searchKeyword="searchKeyword"
+        v-on:search="handleSearch"
+        v-on:submit="handleSearchSubmit"
+      />
       <ul class="card-wrapper">
         <product-item
-          v-for="item in products"
+          v-for="item in filteredProducts"
           :key="item.id"
-          class=""
-          v-bind:price="item.price"
-          v-bind:id="item.id"
-          v-bind:name="item.name"
-          v-bind:image-url="item.imageUrl"
+          v-bind:item="item"
+          v-bind:isAdded="getCartItemList.some(row => row.id === item.id)"
           v-on:onClick="handleProductClick(item.id)"
+          v-on:onAddCart="handleAddCart(item)"
         >
-          <img class="product-image" :src="item.imageUrl" alt="" />
-          <p>{{ item.name }}</p>
-          <span>{{ item.price }}</span>
+
         </product-item>
       </ul>
       <div class="cart-wrapper">
-        <button class="btn">장바구니 바로가기</button>
+        <!--   장바구니 목록    -->
+        <ul :class="{ 'cart-list': true, 'hide': !getCartItemList.length }">
+          <li v-for="item in getCartItemList" v-bind:key="item.id">
+            {{ item.name }}
+            {{ item.price }}
+          </li>
+        </ul>
+        <button class="btn" @click="handleGoToCart">장바구니 바로가기</button>
+
       </div>
     </main>
   </div>
 </template>
 
 <script>
+import {mapGetters} from 'vuex';
 import axios from 'axios'
 import ProductItem from '@/components/ProductItem.vue'
 import SearchInput from '@/components/SearchInput.vue'
-import generateImgUrl from '@/utils/generateImgUrl.js'
 
 export default {
-  async asyncData({ error }) {
+  async asyncData(context) {
+    const { error, $replaceImgUrl, $store } = context
+
     try {
       const response = await axios.get('http://localhost:3000/products')
 
+      // const cartItemRes = await $store.dispatch({ type: 'fetchCartItemList' });
+
       const { data } = response
 
-      debugger
       return {
         products: data.map((item) => ({
           ...item,
-          imageUrl: generateImgUrl(item.imageUrl, item.id),
+          imageUrl: $replaceImgUrl(item.imageUrl, item.id),
         })),
       }
     } catch (e) {
@@ -60,11 +71,46 @@ export default {
   data() {
     return {
       products: [],
+      cart: [],
+      keyword: '',
+      searchKeyword: '',
+      isShowCartList: false,
     }
   },
   methods: {
     handleProductClick(id) {
       this.$router.push(`/product/${id}`)
+    },
+    handleSearch(searchKeyword) {
+      this.searchKeyword = searchKeyword;
+    },
+    async handleSearchSubmit() {
+      const res = await axios('http://localhost:3000/products', {
+        params: { name: this.searchKeyword },
+      });
+
+      this.products = res.data;
+    },
+    async handleAddCart(item) {
+      const cartItem = this.getCartItemList.find(row => row.id === item.id)
+      if (cartItem) {
+        await this.$store.dispatch({ type: 'fetchDeleteCartItemList', payload: cartItem });
+      } else {
+        await this.$store.dispatch({ type: 'fetchSetCartItemList', payload: item });
+      }
+      await this.$store.dispatch({ type: 'fetchCartItemList' });
+    },
+    handleGoToCart() {
+      this.$router.push('/cart');
+    },
+  },
+  computed: {
+    ...mapGetters(['getCartItemList']),
+    filteredProducts() {
+      if (!this.searchKeyword) return this.products
+      return this.products.filter(({ name = '' }) =>
+        (name.toLowerCase()).includes(this.searchKeyword.toLowerCase())
+      )
     },
   },
 }
@@ -87,35 +133,48 @@ ul {
 .card-wrapper li {
   cursor: pointer;
 }
-.flex {
-  display: flex;
-  justify-content: center;
-}
-.item {
-  display: inline-block;
-  width: 400px;
-  height: 300px;
-  text-align: center;
-  margin: 0 0.5rem;
-  cursor: pointer;
-}
-.product-image {
-  width: 400px;
-  height: 250px;
-}
+
 .app {
   position: relative;
 }
 .cart-wrapper {
   position: sticky;
+  align-items: center;
+  justify-content: flex-end;
   float: right;
   bottom: 50px;
   right: 50px;
 }
 .cart-wrapper .btn {
-  display: inline-block;
+  width: 200px;
   height: 40px;
   font-size: 1rem;
   font-weight: 500;
 }
+
+.cart-list {
+
+  height: 200px;
+  overflow-y: scroll;
+  background: #fff;
+  border: 1px solid #34495E;
+  padding: 1rem;
+}
+
+.cart-list.hide {
+  height: 0px;
+  display: none;
+}
+
+.cart-list li {
+  height: 40px;
+  display: flex;
+  align-items: center;
+}
+
+li {
+  display: inherit;
+  list-style-type: none;
+}
 </style>
+

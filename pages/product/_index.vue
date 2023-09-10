@@ -4,7 +4,7 @@
       <div class="main-panel">
         <img
           class="product-image"
-          :src="generateImgUrl(product.imageUrl, product.id)"
+          :src="$replaceImgUrl(product.imageUrl, product.id)"
           :alt="product.name"
         />
       </div>
@@ -20,7 +20,6 @@
 <script lang="ts">
 import axios from 'axios'
 import { Context } from '@nuxt/types'
-import generateImgUrl from '@/utils/generateImgUrl'
 
 export default {
   async asyncData(context: Context) {
@@ -38,7 +37,6 @@ export default {
   },
   methods: {
     addToCart() {},
-    generateImgUrl,
   },
   computed: {},
   created() {},

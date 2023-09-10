@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "nuxt",
+    "server": "cd backend && yarn dev",
     "build": "nuxt build",
     "start": "nuxt start",
     "generate": "nuxt generate",
