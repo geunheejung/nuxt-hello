@@ -181,5 +181,27 @@
       "imageUrl": "https://picsum.photos/id/{id}/640/480"
     }
   ],
-  "carts": []
+  "carts": [
+    {
+      "id": 0,
+      "name": "Refined Fresh Chicken",
+      "price": "209.00",
+      "imageUrl": "https://picsum.photos/id/0/640/480",
+      "uuid": 1
+    },
+    {
+      "id": 1,
+      "name": "Intelligent Metal Mouse",
+      "price": "84.00",
+      "imageUrl": "https://picsum.photos/id/1/640/480",
+      "uuid": 2
+    },
+    {
+      "id": 2,
+      "name": "Handcrafted Frozen Pizza",
+      "price": "315.00",
+      "imageUrl": "https://picsum.photos/id/2/640/480",
+      "uuid": 3
+    }
+  ]
 }

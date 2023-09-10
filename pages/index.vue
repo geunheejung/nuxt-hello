@@ -21,7 +21,7 @@
       <div class="cart-wrapper">
         <!--   장바구니 목록    -->
         <ul :class="{ 'cart-list': true, 'hide': !getCartItemList.length }">
-          <li v-for="item in getCartItemList" v-bind:key="item.id">
+          <li v-for="item in getCartItemList" v-bind:key="item.uuid">
             {{ item.name }}
             {{ item.price }}
           </li>

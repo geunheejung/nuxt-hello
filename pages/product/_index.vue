@@ -4,7 +4,7 @@
       <div class="main-panel">
         <img
           class="product-image"
-          :src="$replaceImgUrl(product.imageUrl, product.id)"
+          :src="product.imageUrl"
           :alt="product.name"
         />
       </div>
@@ -17,18 +17,19 @@
   </div>
 </template>
 
-<script lang="ts">
-import axios from 'axios'
+<script>
 import { Context } from '@nuxt/types'
+import { getProduct } from '@/api';
 
 export default {
-  async asyncData(context: Context) {
+  async asyncData(context) {
     const {
       params: { index },
     } = context
-    const { data } = await axios.get(`http://localhost:3000/products/${index}`)
+    const { data } = await getProduct(index)
 
-    return { product: data }
+    const [product] = data;
+    return { product: { ...product, imageUrl: context.$replaceImgUrl(product.imageUrl, product.id) } }
   },
   data() {
     return {
@@ -36,7 +37,13 @@ export default {
     }
   },
   methods: {
-    addToCart() {},
+    async addToCart() {
+      this.addCartFlow();
+    },
+    async addCartFlow() {
+      await this.$store.dispatch({ type: 'fetchSetCartItemList', payload: this.product });
+      this.$router.push('/cart');
+    }
   },
   computed: {},
   created() {},

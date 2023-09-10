@@ -38,7 +38,12 @@ export const actions = {
     context.commit('setChartItemList', data)
   },
   async fetchSetCartItemList(context, { payload }) {
-    const { data } = await setCartItemList(payload)
+    const {
+      state: { cartItemList },
+    } = context
+    const { id } = payload
+    const cartItem = cartItemList.find((row) => row.id === id) || payload
+    const { data } = await setCartItemList(cartItem)
   },
   async fetchDeleteCartItemList(context, { payload }) {
     const { data } = await deleteCartItemList(payload)
