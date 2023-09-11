@@ -3,7 +3,16 @@
     {
       "src": "nuxt.config.js",
       "use": "@nuxtjs/vercel-builder",
-      "config": {}
+      "config": {
+        "env": {
+          "SERVER_URL": "https://my-json-server.typicode.com/geunheejung/nuxt-hello-api"
+        },
+        "build": {
+          "env": {
+            "SERVER_URL": "https://my-json-server.typicode.com/geunheejung/nuxt-hello-api"
+          }
+        }
+      }
     }
   ]
 }
