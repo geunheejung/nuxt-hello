@@ -19,7 +19,7 @@
 
 <script>
 import { Context } from '@nuxt/types'
-import { getProduct } from '@/api';
+import { getProduct } from '@/api'
 
 export default {
   async asyncData(context) {
@@ -28,8 +28,26 @@ export default {
     } = context
     const { data } = await getProduct(index)
 
-    const [product] = data;
-    return { product: { ...product, imageUrl: context.$replaceImgUrl(product.imageUrl, product.id) } }
+    const [product] = data
+    return {
+      product: {
+        ...product,
+        imageUrl: context.$replaceImgUrl(product.imageUrl, product.id),
+      },
+    }
+  },
+  head() {
+    return {
+      title: `Item Detail - ${this.product.name}`,
+      meta: [
+        {
+          // hid 값과 매칭되는 메타 태그를 아래 내용으로 덮어씌운다.
+          hid: 'description',
+          name: 'description',
+          content: `이 상품은 ${this.product.name} 입니다.`,
+        },
+      ],
+    }
   },
   data() {
     return {
@@ -38,12 +56,15 @@ export default {
   },
   methods: {
     async addToCart() {
-      this.addCartFlow();
+      this.addCartFlow()
     },
     async addCartFlow() {
-      await this.$store.dispatch({ type: 'fetchSetCartItemList', payload: this.product });
-      this.$router.push('/cart');
-    }
+      await this.$store.dispatch({
+        type: 'fetchSetCartItemList',
+        payload: this.product,
+      })
+      this.$router.push('/cart')
+    },
   },
   computed: {},
   created() {},
