@@ -2,14 +2,18 @@ export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
     // 애플리케이션에 대한 모든 기본 메타 태그를 정의할 수 있다.
-    title: 'nuxt-tuto',
+    title: 'Nuxt Shopping',
     htmlAttrs: {
       lang: 'en',
     },
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: '' },
+      {
+        hid: 'description',
+        name: 'description',
+        content: 'Nuxt Shopping Site',
+      },
       // 아이폰 사파리 -> 숫자를 전화번호로 자동 인식 -> 자동링크 해제
       { name: 'format-detection', content: 'telephone=no' },
     ],
