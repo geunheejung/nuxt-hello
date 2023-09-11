@@ -10,7 +10,7 @@ export class Cart {
   }
 }
 
-const instance = axios.create({
+export const instance = axios.create({
   baseURL: process.env.SERVER_URL || 'http://127.0.0.1:3000',
 })
 
