@@ -40,7 +40,7 @@ export default {
     transpile: [({ isLegacy }) => isLegacy && 'axios'],
   },
   env: {
-    SERVER_URL: process.env.SERVER_URL || 'http://127.0.0.1:3000',
+    SERVER_URL: `https://my-json-server.typicode.com/geunheejung/nuxt-hello-api`,
   },
   //  server setup
   server: {
