@@ -39,8 +39,11 @@ export default {
   build: {
     transpile: [({ isLegacy }) => isLegacy && 'axios'],
   },
+  env: {
+    SERVER_URL: process.env.SERVER_URL || 'http://127.0.0.1:3000',
+  },
   //  server setup
-  // server: {
-  //   port: 8080,
-  // },
+  server: {
+    port: process.env.NODE_ENV === 'production' ? null : 8080,
+  },
 }

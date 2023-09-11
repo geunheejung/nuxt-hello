@@ -11,7 +11,7 @@ export class Cart {
 }
 
 const instance = axios.create({
-  baseURL: 'http://127.0.0.1:3000',
+  baseURL: process.env.SERVER_URL || 'http://127.0.0.1:3000',
 })
 
 export const getProduct = async (productId) => {
