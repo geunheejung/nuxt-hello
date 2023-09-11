@@ -40,7 +40,7 @@ export default {
     transpile: [({ isLegacy }) => isLegacy && 'axios'],
   },
   //  server setup
-  server: {
-    port: 8080,
-  },
+  // server: {
+  //   port: 8080,
+  // },
 }
